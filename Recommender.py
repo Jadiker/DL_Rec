@@ -51,6 +51,7 @@ def readCsvData(trainDataFolder,fileName):
         listLevel1 = filter(lambda a: a != "", listLevel1)
         listLevel1 = filter(lambda a: a != ' ', listLevel1)
         listLevel1 = filter(lambda a: a != None, listLevel1) 
+        listLevel1 = list(listLevel1)
         if len(listLevel1) > 0:
             newList.append(listLevel1)
        
@@ -184,8 +185,11 @@ def run(onlyModelFiles):
         print("hometown_list size: ", len(hometown_list))
          
         # set other parameters
-        k = 10 # output_size
-        N = 30 # neighbor_count
+        # k = 10 # output_size
+        # N = 30 # neighbor_count
+        # TODO testing
+        k = 2
+        N = 1
         outFileName = getOutFileName(rec_type, "no_inverted_model", model_name)
         recommend(outDataFolder, outFileName, model, users_list, loc_list, hometown_list, rec_type, k, N, model)
                    

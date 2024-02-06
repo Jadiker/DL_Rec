@@ -14,7 +14,8 @@ from gensim.models import Word2Vec
 import time
 
 trainDataFolder =  "data" 
-modelFolder = os.path.join('model', "model-users")
+# modelFolder = os.path.join('model', "model-users")
+modelFolder = "model"
 
 def hash32(value):
     random.seed(123)
@@ -69,9 +70,9 @@ def train_word2vec_model(modelFolder, sentences, featureCount = None, contextCou
         window = context,
         sample = downsampling,
         seed = 1,
-        hashfxn=hash32,
+        hashfxn = hash32,
         epochs = iterCount, # https://stackoverflow.com/questions/53195906/getting-init-got-an-unexpected-keyword-argument-document-this-error-in#comment119877540_67080756
-        sg=algorithmType
+        sg = algorithmType
     )
 
     

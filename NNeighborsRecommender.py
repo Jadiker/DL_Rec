@@ -53,7 +53,7 @@ class NNeighborsRecommender(object):
         # remove items which start with "user"
         for user_item in shared:
             rec_items.remove(user_item)
-        rec_items = filter(lambda x: x not in shared, rec_items)
+        rec_items = list(filter(lambda x: x not in shared, rec_items))
             
         # remove if too many items are collected    
         if len(rec_items) > k:
@@ -93,17 +93,17 @@ class NNeighborsRecommender(object):
         # I'm trying to do sth like do-while 
         
         # TODO do i need this?
-        if(target_userid in model.vocab):
+        if (target_userid in model.wv.key_to_index): # https://stackoverflow.com/a/69542725/5049813
             pass #print(target_userid)
         else: 
             return []
         
         #WHEN use Doc2Vec
-        rec_neighbours_tuples = model.docvecs.most_similar(positive=[target_userid],topn=N)
+        # rec_neighbours_tuples = model.docvecs.most_similar(positive=[target_userid],topn=N)
         
         #WHEN use Word2Vec
-        rec_neighbours_tuples = model.most_similar(positive=[target_userid],topn=N)
-        Todo
+        rec_neighbours_tuples = model.wv.most_similar(positive=[target_userid],topn=N)
+        # Todo
         
         rec_neighbours = [ seq[0] for seq in rec_neighbours_tuples ]
         s1, s2 = set(rec_neighbours), set(unwantedList)
@@ -111,11 +111,12 @@ class NNeighborsRecommender(object):
                 
         # when there are not enough (less than N) neighbor recommendations
         # collect more recommendations from the model
+        # TODO detect infinite loop if there are no more possible rects
         while (len(rec_neighbours)-len(shared)) < N:
             # increment output list size
             temp_N = N + (len(shared)*3)
             # get larger number of similar items
-            rec_neighbours_tuples = model.most_similar(positive=[target_userid],topn=temp_N)
+            rec_neighbours_tuples = model.wv.most_similar(positive=[target_userid],topn=temp_N)
             rec_neighbours = [ seq[0] for seq in rec_neighbours_tuples ]
             s1, s2 = set(rec_neighbours), set(unwantedList)
             shared = s1 & s2 # intersection, only the elements in both
@@ -143,7 +144,7 @@ class NNeighborsRecommender(object):
             if target_userid == ' ' or target_userid == '' or target_userid == None:
                 print("empty userid!!!")
                 print("users_list size:", len(users_list))
-                break;
+                break
             
             # get neighbours
             unwantedList = loc_list + hometown_list
@@ -163,6 +164,7 @@ class NNeighborsRecommender(object):
             reverse_sorted_visited_loc_list = [i[0] for i in reverse_sorted_visited_loc_counter]
             
             #recommend top-k of them
+            users_list = list(users_list)
             unwantedList2 = users_list + hometown_list
             rec_items = self.find_rec_items(reverse_sorted_visited_loc_list, k,
                                             unwantedList2, target_userid);
