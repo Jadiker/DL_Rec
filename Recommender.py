@@ -189,8 +189,8 @@ def run(onlyModelFiles):
         # k = 10 # output_size
         # N = 30 # neighbor_count
         # TODO testing
-        k = 3
-        N = 3
+        k = 5
+        N = 1
         outFileName = getOutFileName(rec_type, "no_inverted_model", model_name)
         recommend(outDataFolder, outFileName, model, users_list, loc_list, hometown_list, rec_type, k, N, model)
                    
