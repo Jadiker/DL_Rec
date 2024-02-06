@@ -37,7 +37,7 @@ def train_word2vec_model(modelFolder, sentences, featureCount = None, contextCou
     else:
         num_features = featureCount
         
-    max_vocab_size=None,
+    max_vocab_size=None
     min_word_count = 1    # Minimum word count
     num_workers = 1       # Number of threads to run in parallel
     
@@ -60,10 +60,19 @@ def train_word2vec_model(modelFolder, sentences, featureCount = None, contextCou
     # Initialize and train the model (this will take some time)
     print ("Training Word2Vec model...")
     print("context window size: ", context)
-    model = Word2Vec(sentences=sentences, workers=num_workers, \
-                size=num_features, min_count = min_word_count, max_vocab_size=max_vocab_size, \
-                window = context, sample = downsampling, seed=1, \
-                hashfxn=hash32, iter = iterCount, sg=algorithmType)
+    model = Word2Vec(
+        sentences = sentences,
+        workers = num_workers,
+        vector_size = num_features, # https://stackoverflow.com/a/67080756
+        min_count = min_word_count,
+        max_vocab_size = max_vocab_size,
+        window = context,
+        sample = downsampling,
+        seed = 1,
+        hashfxn=hash32,
+        epochs = iterCount, # https://stackoverflow.com/questions/53195906/getting-init-got-an-unexpected-keyword-argument-document-this-error-in#comment119877540_67080756
+        sg=algorithmType
+    )
 
     
     # If you don't plan to train the model any further, calling
@@ -96,6 +105,7 @@ def readCsvData(trainDataFolder,fileName):
         listLevel1 = filter(lambda a: a != "", listLevel1)
         listLevel1 = filter(lambda a: a != ' ', listLevel1)
         listLevel1 = filter(lambda a: a != None, listLevel1) 
+        listLevel1 = list(listLevel1)
         if len(listLevel1) > 0:
             newList.append(listLevel1)
        

@@ -9,7 +9,7 @@ import operator
 import os
 import time
 from Commons import Commons
-from sphinx.ext.todo import Todo
+# from sphinx.ext.todo import Todo
 
 class NNeighborsRecommender(object):
     def create_inverted_list(self, data):
